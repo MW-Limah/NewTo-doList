@@ -162,44 +162,38 @@
     }
 
     .task {
-        display: grid;
-        grid-template-rows: auto auto;
-        grid-template-areas:
-            "task-content"
-            "task-actions";
+        display: flex;
+        flex-direction: column;
+        /* Garante que os elementos fiquem em coluna */
         gap: 0.5rem;
+        /* Espaçamento entre as linhas */
         padding: 1rem;
         width: 100%;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
-        align-items: start;
         background-color: #f8f9fa;
         border: 1px solid #ccc;
     }
 
     .task-content {
-        grid-area: task-content;
         text-align: left;
         font-size: 1rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
         line-height: 1.5;
+        margin-bottom: 0.5rem;
+        /* Espaço abaixo do texto */
     }
 
     .task-actions {
-        grid-area: task-actions;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        /* Alinha os botões à esquerda */
         gap: 0.5rem;
+        /* Espaçamento entre os botões */
     }
 
     .task-checkbox {
-        margin-right: auto;
-    }
-
-    .task-btn {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.8rem;
-        border-radius: 4px;
+        margin-right: 0.5rem;
     }
 }
