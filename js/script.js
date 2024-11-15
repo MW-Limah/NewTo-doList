@@ -213,7 +213,18 @@ function lerTarefa(button) {
     synth.speak(utterance);
 }
 
-
+function exibirTextoCompleto(event) {
+    const textoCompleto = event.target.textContent;
+    const modalTexto = document.createElement('div');
+    modalTexto.className = 'modal-text';
+    modalTexto.innerHTML = `
+        <div class="modal-content">
+            <span class="close-button" onclick="this.parentElement.parentElement.remove()">×</span>
+            <p>${textoCompleto}</p>
+        </div>
+    `;
+    document.body.appendChild(modalTexto);
+}
 
 
 function editarTarefa(button) {
@@ -336,15 +347,16 @@ function loadTasks(listId) {
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
             taskElement.innerHTML = `
-                <input type="checkbox" class="task-checkbox" onclick="atualizarStatusTarefa(this, ${listId})"
-                       ${task.completed ? 'checked' : ''}>
-                <div class="task-content">${tarefaHtml}</div>
+                <input type="checkbox" class="task-checkbox" onclick="atualizarStatusTarefa(this, ${listId})" ${task.completed ? 'checked' : ''}>
+                <div class="task-content">${task.content}</div>
                 <div class="task-actions">
                     <button class="task-btn task-btn-edit">Editar</button>
                     <button class="task-btn task-btn-delete">Apagar</button>
                     <button class="task-btn task-btn-speak" onclick="lerTarefa(this)">🔊 Ouvir</button>
                 </div>
             `;
+            tasksContainer.appendChild(taskElement);
+            taskElement.querySelector('.task-content').addEventListener('click', exibirTextoCompleto);
             tasksContainer.appendChild(taskElement);
 
             // Marcar visualmente como concluída, se aplicável

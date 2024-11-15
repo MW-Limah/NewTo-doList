@@ -55,10 +55,15 @@
     }
 
     .task {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
         padding: 0.8rem;
     }
 
     .task-btn {
+        margin: 10px 0;
         font-size: 0.75rem;
         padding: 0.3rem 0.5rem;
     }
@@ -163,17 +168,12 @@
 
     .task {
         display: flex;
-        flex-direction: column;
-        /* Garante que os elementos fiquem em coluna */
-        gap: 0.5rem;
-        /* Espaçamento entre as linhas */
-        padding: 1rem;
-        width: 100%;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        background-color: #f8f9fa;
-        border: 1px solid #ccc;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        padding: 0.8rem;
     }
+
 
     .task-content {
         text-align: left;
@@ -194,6 +194,8 @@
     }
 
     .task-checkbox {
+        position: relative;
+        right: 50%;
         margin-right: 0.5rem;
     }
 }

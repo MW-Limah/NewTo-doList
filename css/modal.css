@@ -71,7 +71,11 @@
 
 .task {
     display: flex;
+    flex-wrap: nowrap;
+    /* Garante que os itens não quebrem para a próxima linha */
     align-items: center;
+    justify-content: space-between;
+    /* Espaçamento entre texto e botões */
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 8px;
@@ -92,6 +96,23 @@
 
 .task-content {
     flex-grow: 1;
+    overflow: hidden;
+    /* Esconde o excesso por padrão */
+    white-space: nowrap;
+    /* Impede quebra de linha */
+    text-overflow: ellipsis;
+    /* Adiciona reticências ao final do texto */
+    cursor: pointer;
+    /* Indica que é clicável */
+}
+
+.task-content:hover {
+    overflow: auto;
+    /* Mostra o overflow ao passar o mouse */
+    white-space: normal;
+    /* Permite quebra de linha */
+    text-overflow: unset;
+    /* Remove reticências */
 }
 
 .task.completed {
@@ -103,9 +124,13 @@
     color: #888;
 }
 
+
 .task-actions {
     display: flex;
     gap: 0.5rem;
+    /* Espaçamento entre os botões */
+    align-items: center;
+    /* Mantém os botões centralizados */
 }
 
 .task-btn {
@@ -205,4 +230,28 @@
     transform: translateX(-2px);
     background-color: #00677c;
     /* Efeito hover mais escuro */
+}
+
+.modal-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.modal-text .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
 }
