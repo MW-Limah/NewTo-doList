@@ -112,22 +112,6 @@ function atualizarProgresso(listId) {
     }
 }
 
-function atualizarContagemTarefas(listId) {
-    const lists = JSON.parse(localStorage.getItem("lists")) || [];
-    const list = lists.find(item => item.listId === listId);
-
-    if (list) {
-        const taskCount = list.tasks.length;
-        const taskCountText = `${taskCount} Tarefa${taskCount !== 1 ? 's' : ''}`;
-
-        // Atualiza o elemento de contagem de tarefas
-        const taskCountElement = document.querySelector(`#list-${listId} .task-count`);
-        if (taskCountElement) {
-            taskCountElement.textContent = taskCountText;
-        }
-    }
-}
-
 function adicionarTarefa() {
     const modal = document.getElementById('task-modal');
     const listId = parseInt(modal.dataset.listId, 10);
@@ -166,10 +150,11 @@ function adicionarTarefa() {
         addTaskButton.addEventListener('click', () => {
             const taskContent = document.getElementById('task-input').value;
             if (taskContent) {
-                const isUrl = /^(http|https):\/\/[^ "]+$/.test(taskContent);
+                // Verifica se é um link
+                const isUrl = /^(https?:\/\/(?:www\.)?[\w-]+(\.[\w-]+)+(\:[0-9]+)?(\/[^\s]*)?)$/i.test(taskContent);
                 const tarefaHtml = isUrl
-                    ? `<a href="${taskContent}" target="_blank">${taskContent}</a>`
-                    : taskContent;
+                    ? `<a href="${taskContent}" target="_blank">${taskContent}</a>` // Renderiza como link
+                    : taskContent; // Caso não seja URL, exibe como texto simples
 
                 const newTask = document.createElement('div');
                 newTask.className = 'task';
@@ -199,6 +184,7 @@ function adicionarTarefa() {
     }
 }
 
+
 function lerTarefa(button) {
     const taskElement = button.closest('.task');
     const taskContent = taskElement.querySelector('.task-content').textContent;
@@ -214,17 +200,18 @@ function lerTarefa(button) {
 }
 
 function exibirTextoCompleto(event) {
-    const textoCompleto = event.target.textContent;
+    const textoCompleto = event.target.innerHTML; // Use innerHTML para renderizar o link corretamente
     const modalTexto = document.createElement('div');
     modalTexto.className = 'modal-text';
     modalTexto.innerHTML = `
         <div class="modal-content">
             <span class="close-button" onclick="this.parentElement.parentElement.remove()">×</span>
-            <p>${textoCompleto}</p>
+            <p>${textoCompleto}</p> <!-- Aqui o link vai aparecer clicável -->
         </div>
     `;
     document.body.appendChild(modalTexto);
 }
+
 
 
 function editarTarefa(button) {
