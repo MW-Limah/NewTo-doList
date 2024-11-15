@@ -194,8 +194,6 @@
     }
 
     .task-checkbox {
-        position: relative;
-        right: 50%;
         margin-right: 0.5rem;
     }
 }
