@@ -57,7 +57,7 @@ function abrirModalDeTarefas(listId) {
             <div class="header">
                 <h1>${listName}</h1> <!-- Título atualizado para o nome da lista -->
                 <div class="action-buttons">
-                    <button class="btn btn-add">Adicionar Tarefa</button>
+                    <button class="btn btn-add">Adicionar Item</button>
                     <button class="btn btn-complete">Concluir Lista</button>
                     <button class="btn btn-delete">Apagar Lista</button>
                 </div>
@@ -126,7 +126,7 @@ function adicionarTarefa() {
         voiceInputContainer.id = 'voice-input-container';
         voiceInputContainer.innerHTML = `
             <div class="div-add-task">
-                <input class="input-add-task" type="text" id="task-input" placeholder="Digite a nova tarefa ou use a voz">
+                <input class="input-add-task" type="text" id="task-input" placeholder="Digite o novo item ou use a voz">
                 <button class="voice-btn" id="voice-btn">🎤</button>
             </div>
         `;
@@ -147,7 +147,7 @@ function adicionarTarefa() {
         });
 
         const addTaskButton = document.createElement('button');
-        addTaskButton.textContent = "Adicionar Tarefa";
+        addTaskButton.textContent = "Adicionar Item";
         addTaskButton.id = 'confirm-add-task';
         modal.querySelector('.header').appendChild(addTaskButton);
 
