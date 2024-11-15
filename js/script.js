@@ -81,6 +81,18 @@ function abrirModalDeTarefas(listId) {
     });
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+    loadLists();
+    listCounter = parseInt(localStorage.getItem("listCounter"), 10) || 0;
+
+    // Verifica se o modal estava aberto
+    const openModal = JSON.parse(localStorage.getItem('openModal'));
+    if (openModal && openModal.isOpen) {
+        abrirModalDeTarefas(openModal.listId);
+    }
+});
+
+
 function atualizarProgresso(listId) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
     const list = lists.find(item => item.listId === listId);
@@ -154,11 +166,16 @@ function adicionarTarefa() {
         addTaskButton.addEventListener('click', () => {
             const taskContent = document.getElementById('task-input').value;
             if (taskContent) {
+                const isUrl = /^(http|https):\/\/[^ "]+$/.test(taskContent);
+                const tarefaHtml = isUrl
+                    ? `<a href="${taskContent}" target="_blank">${taskContent}</a>`
+                    : taskContent;
+
                 const newTask = document.createElement('div');
                 newTask.className = 'task';
                 newTask.innerHTML = `
                     <input type="checkbox" class="task-checkbox" onclick="atualizarStatusTarefa(this, ${listId})">
-                    <div class="task-content">${taskContent}</div>
+                    <div class="task-content">${tarefaHtml}</div>
                     <div class="task-actions">
                         <button class="task-btn task-btn-edit" onclick="editarTarefa(this)">Editar</button>
                         <button class="task-btn task-btn-delete" onclick="apagarTarefa(this, ${listId})">Apagar</button>
@@ -169,6 +186,10 @@ function adicionarTarefa() {
                 saveTask(listId, taskContent, false);
                 atualizarProgresso(listId); // Atualiza a barra de progresso ao adicionar tarefa
                 atualizarContagemTarefas(listId); // Atualiza a contagem de tarefas ao adicionar tarefa
+
+                // Salva o estado atual do modal no LocalStorage
+                localStorage.setItem('openModal', JSON.stringify({ isOpen: true, listId }));
+                location.reload(); // Recarrega a página
             }
 
             document.getElementById('task-input').value = '';
@@ -259,8 +280,9 @@ function completarTarefas() {
 
 function fecharModal() {
     document.getElementById('task-modal').style.display = 'none';
+    localStorage.removeItem('openModal'); // Remove o estado do modal
 }
-window.fecharModal = fecharModal;
+
 
 function saveList(listId, listName = `Lista ${listId}`) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
@@ -305,12 +327,18 @@ function loadTasks(listId) {
 
     if (list && list.tasks) {
         list.tasks.forEach((task, index) => {
+            // Verifica se a tarefa é uma URL válida
+            const isUrl = /^(http|https):\/\/[^ "]+$/.test(task.content);
+            const tarefaHtml = isUrl
+                ? `<a href="${task.content}" target="_blank">${task.content}</a>` // Renderiza como link
+                : task.content; // Renderiza como texto simples
+
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
             taskElement.innerHTML = `
                 <input type="checkbox" class="task-checkbox" onclick="atualizarStatusTarefa(this, ${listId})"
                        ${task.completed ? 'checked' : ''}>
-                <div class="task-content">${task.content}</div>
+                <div class="task-content">${tarefaHtml}</div>
                 <div class="task-actions">
                     <button class="task-btn task-btn-edit">Editar</button>
                     <button class="task-btn task-btn-delete">Apagar</button>
@@ -334,6 +362,7 @@ function loadTasks(listId) {
         });
     }
 }
+
 
 
 function atualizarStatusTarefa(checkbox, listId) {
