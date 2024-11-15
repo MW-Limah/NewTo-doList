@@ -126,7 +126,6 @@ function adicionarTarefa() {
                 <button class="voice-btn" id="voice-btn">🎤</button>
             </div>
         `;
-
         modal.querySelector('.header').appendChild(voiceInputContainer);
 
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -150,11 +149,10 @@ function adicionarTarefa() {
         addTaskButton.addEventListener('click', () => {
             const taskContent = document.getElementById('task-input').value;
             if (taskContent) {
-                // Verifica se é um link
                 const isUrl = /^(https?:\/\/(?:www\.)?[\w-]+(\.[\w-]+)+(\:[0-9]+)?(\/[^\s]*)?)$/i.test(taskContent);
                 const tarefaHtml = isUrl
-                    ? `<a href="${taskContent}" target="_blank">${taskContent}</a>` // Renderiza como link
-                    : taskContent; // Caso não seja URL, exibe como texto simples
+                    ? `<a href="${taskContent}" target="_blank">${taskContent}</a>`  // Link será clicável
+                    : taskContent;
 
                 const newTask = document.createElement('div');
                 newTask.className = 'task';
@@ -169,10 +167,9 @@ function adicionarTarefa() {
                 `;
                 tasksContainer.appendChild(newTask);
                 saveTask(listId, taskContent, false);
-                atualizarProgresso(listId); // Atualiza a barra de progresso ao adicionar tarefa
-                atualizarContagemTarefas(listId); // Atualiza a contagem de tarefas ao adicionar tarefa
+                atualizarProgresso(listId);  // Atualiza a barra de progresso
+                atualizarContagemTarefas(listId); // Atualiza a contagem de tarefas
 
-                // Salva o estado atual do modal no LocalStorage
                 localStorage.setItem('openModal', JSON.stringify({ isOpen: true, listId }));
                 location.reload(); // Recarrega a página
             }
@@ -183,6 +180,8 @@ function adicionarTarefa() {
         });
     }
 }
+
+
 
 
 function lerTarefa(button) {
@@ -200,17 +199,18 @@ function lerTarefa(button) {
 }
 
 function exibirTextoCompleto(event) {
-    const textoCompleto = event.target.innerHTML; // Use innerHTML para renderizar o link corretamente
+    const textoCompleto = event.target.innerHTML; // Use innerHTML para garantir que o link seja exibido corretamente
     const modalTexto = document.createElement('div');
     modalTexto.className = 'modal-text';
     modalTexto.innerHTML = `
         <div class="modal-content">
             <span class="close-button" onclick="this.parentElement.parentElement.remove()">×</span>
-            <p>${textoCompleto}</p> <!-- Aqui o link vai aparecer clicável -->
+            <p>${textoCompleto}</p> <!-- O link será exibido corretamente aqui -->
         </div>
     `;
     document.body.appendChild(modalTexto);
 }
+
 
 
 
@@ -326,16 +326,16 @@ function loadTasks(listId) {
     if (list && list.tasks) {
         list.tasks.forEach((task, index) => {
             // Verifica se a tarefa é uma URL válida
-            const isUrl = /^(http|https):\/\/[^ "]+$/.test(task.content);
+            const isUrl = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(task.content);
             const tarefaHtml = isUrl
-                ? `<a href="${task.content}" target="_blank">${task.content}</a>` // Renderiza como link
-                : task.content; // Renderiza como texto simples
+                ? `<a href="${task.content}" target="_blank">${task.content}</a>` // Exibe como link
+                : task.content; // Caso contrário, exibe o texto simples
 
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
             taskElement.innerHTML = `
                 <input type="checkbox" class="task-checkbox" onclick="atualizarStatusTarefa(this, ${listId})" ${task.completed ? 'checked' : ''}>
-                <div class="task-content">${task.content}</div>
+                <div class="task-content">${tarefaHtml}</div>
                 <div class="task-actions">
                     <button class="task-btn task-btn-edit">Editar</button>
                     <button class="task-btn task-btn-delete">Apagar</button>
@@ -344,14 +344,11 @@ function loadTasks(listId) {
             `;
             tasksContainer.appendChild(taskElement);
             taskElement.querySelector('.task-content').addEventListener('click', exibirTextoCompleto);
-            tasksContainer.appendChild(taskElement);
 
-            // Marcar visualmente como concluída, se aplicável
             if (task.completed) {
                 taskElement.classList.add('completed');
             }
 
-            // Adiciona eventos aos botões de editar e apagar
             taskElement.querySelector('.task-btn-edit').addEventListener('click', function () {
                 editarTarefa(this);
             });
@@ -361,6 +358,7 @@ function loadTasks(listId) {
         });
     }
 }
+
 
 
 
