@@ -181,6 +181,18 @@ function adicionarTarefa() {
     }
 }
 
+function atualizarContagemTarefas(listId) {
+    const lists = JSON.parse(localStorage.getItem("lists")) || [];
+    const list = lists.find(item => item.listId === listId);
+
+    if (list) {
+        const taskCount = list.tasks.length; // Número total de tarefas
+        const taskCountElement = document.querySelector(`#list-${listId} .task-count`);
+        if (taskCountElement) {
+            taskCountElement.textContent = `${taskCount} Tarefas`; // Atualiza o contador na interface
+        }
+    }
+}
 
 
 
