@@ -28,7 +28,7 @@ function criarLista(id = null, isLoaded = false) {
             <div class="task-count">0 Tarefas</div>
             <div class="progress-bar">
                 <div class="progress" style="width: 0%"></div>
-            </div>
+                </div>
         </div>
     `;
 
@@ -41,6 +41,7 @@ function criarLista(id = null, isLoaded = false) {
     atualizarContagemTarefas(listId);
     atualizarProgresso(listId);
 }
+
 function abrirModalDeTarefas(listId) {
     const modal = document.getElementById('task-modal');
     const modalTitle = document.getElementById('modal-title');
@@ -92,7 +93,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
 function atualizarProgresso(listId) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
     const list = lists.find(item => item.listId === listId);
@@ -123,7 +123,7 @@ function adicionarTarefa() {
         voiceInputContainer.innerHTML = `
             <div class="div-add-task">
                 <input class="input-add-task" type="text" id="task-input" placeholder="Digite o novo item ou use a voz">
-                <button class="voice-btn" id="voice-btn">🎤</button>
+                <button class="voice-btn" id="voice-btn"><i class="fa-solid fa-microphone"></i></button>
             </div>
         `;
         modal.querySelector('.header').appendChild(voiceInputContainer);
@@ -162,7 +162,7 @@ function adicionarTarefa() {
                     <div class="task-actions">
                         <button class="task-btn task-btn-edit" onclick="editarTarefa(this)">Editar</button>
                         <button class="task-btn task-btn-delete" onclick="apagarTarefa(this, ${listId})">Apagar</button>
-                        <button class="task-btn task-btn-speak" onclick="lerTarefa(this)">🔊 Ouvir</button>
+                        <button class="task-btn task-btn-speak" onclick="lerTarefa(this)"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                 `;
                 tasksContainer.appendChild(newTask);
@@ -194,8 +194,6 @@ function atualizarContagemTarefas(listId) {
     }
 }
 
-
-
 function lerTarefa(button) {
     const taskElement = button.closest('.task');
     const taskContent = taskElement.querySelector('.task-content').textContent;
@@ -222,9 +220,6 @@ function exibirTextoCompleto(event) {
     `;
     document.body.appendChild(modalTexto);
 }
-
-
-
 
 function editarTarefa(button) {
     const taskElement = button.closest('.task');
@@ -269,6 +264,7 @@ function apagarTarefa(button, listId) {
         }
     }
 }
+
 function completarTarefas() {
     const modal = document.getElementById('task-modal');
     const listId = parseInt(modal.dataset.listId, 10);
@@ -293,7 +289,6 @@ function fecharModal() {
     localStorage.removeItem('openModal'); // Remove o estado do modal
 }
 
-
 function saveList(listId, listName = `Lista ${listId}`) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
     if (!lists.find(item => item.listId === listId)) {
@@ -311,13 +306,11 @@ function loadLists() {
     });
 }
 
-
 function getListNameFromStorage(listId) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
     const list = lists.find(item => item.listId === listId);
     return list ? list.name : `Lista ${listId}`;
 }
-
 
 function saveTask(listId, taskContent, isCompleted = false) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
@@ -327,7 +320,6 @@ function saveTask(listId, taskContent, isCompleted = false) {
         localStorage.setItem("lists", JSON.stringify(lists));
     }
 }
-
 
 function loadTasks(listId) {
     const lists = JSON.parse(localStorage.getItem("lists")) || [];
@@ -351,7 +343,7 @@ function loadTasks(listId) {
                 <div class="task-actions">
                     <button class="task-btn task-btn-edit">Editar</button>
                     <button class="task-btn task-btn-delete">Apagar</button>
-                    <button class="task-btn task-btn-speak" onclick="lerTarefa(this)">🔊 Ouvir</button>
+                    <button class="task-btn task-btn-speak" onclick="lerTarefa(this)"><i class="fa-solid fa-volume-high"></i></button>
                 </div>
             `;
             tasksContainer.appendChild(taskElement);
@@ -370,9 +362,6 @@ function loadTasks(listId) {
         });
     }
 }
-
-
-
 
 function atualizarStatusTarefa(checkbox, listId) {
     const taskElement = checkbox.closest('.task');

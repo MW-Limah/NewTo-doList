@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Tarefas</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/media-querys.css">
-    <link rel="stylesheet" href="./css/modal.css">
-</head>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/media-querys.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <header>
-            <h1>Minha Lista de Tarefas</h1>
-            <p>Organize suas tarefas do cotidiano!</p>
-        </header>
-        <div class="add-list">
-            <button class="add-button" onclick="criarLista()">Criar nova Lista</button>
-        </div>
-        <div id="listas-container"></div>
+      <header>
+        <h1>Minha Lista de Tarefas</h1>
+        <p>Organize suas tarefas do cotidiano!</p>
+      </header>
+      <div class="add-list">
+        <button class="add-button" onclick="criarLista()">
+          Criar nova Lista
+        </button>
+      </div>
+      <div id="listas-container"></div>
     </div>
 
     <!-- Modal genérico para gerenciar tarefas -->
-    <div id="task-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2 id="modal-title">Gerenciar Tarefas</h2>
-            <div id="task-list"></div>
-        </div>
+    <div id="task-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2 id="modal-title">Gerenciar Tarefas</h2>
+        <div id="task-list"></div>
+      </div>
     </div>
 
     <!-- Scripts -->
     <script src="./js/script.js"></script>
-
-</body>
-
+  </body>
 </html>
