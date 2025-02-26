@@ -10,13 +10,21 @@ function criarLista(id = null, isLoaded = false) {
     const listId = id || ++listCounter;
     if (!isLoaded) localStorage.setItem("listCounter", listCounter);
 
+    // Pergunta ao usuário o nome da lista
+    let listName;
+    if (isLoaded) {
+        listName = getListNameFromStorage(listId); // Recupera o nome salvo do localStorage ao carregar
+    } else {
+        listName = prompt("Qual será o nome da sua Lista?");
+        if (listName === null) {
+            listCounter--; // Reverte a contagem caso o usuário cancele
+            return; // Cancela a criação da lista
+        }
+        listName = listName.trim() || `Lista ${listId}`; // Nome padrão se o usuário não digitar nada
+    }
+
     // Verifica se a lista já existe no DOM
     if (document.getElementById(`list-${listId}`)) return;
-
-    // Pergunta ao usuário o nome da lista
-    const listName = isLoaded
-        ? getListNameFromStorage(listId) // Recupera o nome salvo do localStorage ao carregar
-        : prompt("Qual será o nome da sua Lista?") || `Lista ${listId}`; // Nome padrão se o prompt for cancelado ou vazio
 
     const newListContainer = document.createElement('div');
     newListContainer.className = 'lists-container';
@@ -28,7 +36,7 @@ function criarLista(id = null, isLoaded = false) {
             <div class="task-count">0 Tarefas</div>
             <div class="progress-bar">
                 <div class="progress" style="width: 0%"></div>
-                </div>
+            </div>
         </div>
     `;
 
@@ -41,6 +49,7 @@ function criarLista(id = null, isLoaded = false) {
     atualizarContagemTarefas(listId);
     atualizarProgresso(listId);
 }
+
 
 function abrirModalDeTarefas(listId) {
     const modal = document.getElementById('task-modal');
