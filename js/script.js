@@ -16,11 +16,13 @@ function criarLista(id = null, isLoaded = false) {
         listName = getListNameFromStorage(listId); // Recupera o nome salvo do localStorage ao carregar
     } else {
         listName = prompt("Qual será o nome da sua Lista?");
-        if (listName === null) {
+        
+        // Se o usuário cancelar o prompt ou deixar vazio, cancelar a criação da lista
+        if (listName === null || listName.trim() === "") {
             listCounter--; // Reverte a contagem caso o usuário cancele
-            return; // Cancela a criação da lista
+            localStorage.setItem("listCounter", listCounter); // Atualiza o contador corretamente
+            return; // Sai da função sem criar a lista
         }
-        listName = listName.trim() || `Lista ${listId}`; // Nome padrão se o usuário não digitar nada
     }
 
     // Verifica se a lista já existe no DOM
@@ -49,6 +51,7 @@ function criarLista(id = null, isLoaded = false) {
     atualizarContagemTarefas(listId);
     atualizarProgresso(listId);
 }
+
 
 
 function abrirModalDeTarefas(listId) {
